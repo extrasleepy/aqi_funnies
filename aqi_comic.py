@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #best orange from procreate is around 255,106,0
 #aqi eink comic
-#copyright akleindolph/extrasleepy.com 2022. Attribution required.
+#copyright akleindolph/extrasleepy.com 2002. Attribution required.
 
 import time
 import traceback
@@ -12,8 +12,10 @@ from requests import get
 from inky import Inky7Colour as Inky
 import sys
 import os
-from datetime import date
-import calendar
+import datetime
+#import pytz
+#from datetime import date
+#import calendar
 import random
 
 inky = Inky()
@@ -28,7 +30,7 @@ sm_font = ImageFont.truetype('playtime.ttf', font_size)
 
 url = 'https://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=94114&distance=10&API_KEY=B309BA58-1608-45E6-BB0A-BBF427C99D14'
 
-g_adj = ['supurb', 'lovely', 'fresh', 'crisp', 'dreamy']
+g_adj = ['superb', 'lovely', 'fresh', 'crisp', 'dreamy']
 m_adj = ['okay', 'decent','so-so', 'fair','fine']
 ufsf_adj=['murky', 'dirty', 'somber', 'smoky', 'gloomy']
 ufaf_adj=['filthy','gross','yucky','choky','grimy']
@@ -36,18 +38,26 @@ vuh_adj=['harmful', 'risky', 'poision','unsafe','sad']
 h_adj=['deadly','noxious', 'toxic', 'grim','septic']
 
 while True:
+    time.sleep(20)
     try:
         air_today = get(url).json()
+        time.sleep(5)
+        
 
         x = (air_today[0]['AQI'])
         print(x)
+        
         try:
-            curr_date = date.today()
-            y = calendar.day_name[curr_date.weekday()]
+            day = datetime.datetime.now()
+            #day = datetime.datetime.now(pytz.timezone('America/Los_Angeles'))
+            #day=curr_date = date.today()
+            #y = calendar.day_name[curr_date.weekday()]
+            y=str(day.strftime("%A"))
+            #y=str(datetime.datetime.today().weekday())
         except:
             y="day!"
         print(y)
-    
+
         
         adj = random.randint(0,4)
         #x= 145 #for testing
@@ -163,12 +173,11 @@ while True:
             draw.multiline_text((50,100),part4,fill=(0,0,0), font=sm_font, align="center")
             draw.multiline_text((50,145),part5,fill=(0,0,0), font=sm_font, align="center")
             draw.multiline_text((50,190),part6,fill=(0,0,0), font=sm_font, align="center")
-           
-    except:
+    except:      
         traceback.print_exc()
         message = "AQI data unavailable"
         print("error")
-        part2 = ("on this fine " + y)
+        part2 = ("on this fine day")
         part3 = ("CHECK")
         part4 = ("BACK!")
         image = Image.new("RGB", (inky.width, inky.height), (255, 255, 255))
@@ -184,4 +193,4 @@ while True:
     inky.show()
     time.sleep(5)
     os.system("sudo shutdown -h now")
-    time.sleep(60)
+    time.sleep(20)
