@@ -44,7 +44,7 @@ while True:
         time.sleep(5)
         
 
-        x = (air_today[0]['AQI'])
+        x = (air_today[1]['AQI'])
         print(x)
         
         try:
